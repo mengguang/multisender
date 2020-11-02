@@ -40,7 +40,7 @@ export class ThirdStep extends React.Component {
       })
       return
     }
-    if( new BN(this.tokenStore.totalCostInEth).gt(new BN(this.tokenStore.ethBalance))){
+    if( new BN(this.tokenStore.totalCostInEth).gt(new BN(this.tokenStore.ethBalance.replaceAll(',','')))){
       console.error('please fund you account in ')
       swal({
         title: "Insufficient ETH balance",
@@ -120,7 +120,7 @@ export class ThirdStep extends React.Component {
                 <div className="send-info-i">
                   <p>Approximate Cost of Operation</p>
                   <p className="send-info-amount">
-                  {this.tokenStore.totalCostInEth} ETH        
+                  {this.tokenStore.totalCostInEth} ETH
                   </p>
                 </div>
                 <div className="send-info-i">
@@ -131,7 +131,7 @@ export class ThirdStep extends React.Component {
                 </div>
               </div>
             </div>
-            
+
             <Link onClick={this.onNext} className="button button_next" to='/4'>Next</Link>
           </form>
         </div>

@@ -50,6 +50,18 @@ let getWeb3 = () => {
               explorerUrl = 'https://sokol.poaexplorer.com'
               console.log('This is Sokol', netId)
               break;
+            case "1007":
+              netIdName = 'NewChainTestNet'
+              trustApiName = 'NewChainTestNet'
+              explorerUrl = 'https://explorer.testnet.newtonproject.org'
+              console.log('This is NewChainTestNet', netId)
+              break;
+            case "1012":
+              netIdName = 'NewChainMainNet'
+              trustApiName = 'NewChainMainNet'
+              explorerUrl = 'https://explorer.newtonproject.org'
+              console.log('This is NewChainMainNet', netId)
+              break;
             default:
               netIdName = 'Unknown'
               console.log('This is an unknown network.', netId)
@@ -79,7 +91,7 @@ let getWeb3 = () => {
         https://metamask.io and return to this page after you installed it`
         reject({message: errorMsg})
         console.log('No web3 instance injected, using Local web3.');
-        console.error('Metamask not found'); 
+        console.error('Metamask not found');
       }
     })
   })

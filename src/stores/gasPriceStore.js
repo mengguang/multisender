@@ -17,9 +17,32 @@ class GasPriceStore {
   }
 
   async getGasPrices(){
-    this.gasPricePromise = fetch('https://gasprice.poa.network/').then((response) => {
-      return response.json()
-    }).then((data) => {
+    // this.gasPricePromise = fetch('https://gasprice.poa.network/').then((response) => {
+    //   return response.json()
+    // }).then((data) => {
+    //   this.gasPricesArray.map((v) => {
+    //     v.value = data[v.label]
+    //     v.label = `${v.label}: ${data[v.label]} gwei`
+    //     return v;
+    //   })
+    //   this.selectedGasPrice = data.fast;
+    //   this.gasPrices = data;
+    //   this.loading = false;
+    // }).catch((e) => {
+    //   this.loading = true;
+    //   console.error(e)
+    // })
+
+      let data = {
+        "health": true,
+        "block_number": 11177804,
+        "slow": 500000,
+        "standard": 500000,
+        "fast": 500000,
+        "instant": 500000,
+        "block_time": 3
+      };
+
       this.gasPricesArray.map((v) => {
         v.value = data[v.label]
         v.label = `${v.label}: ${data[v.label]} gwei`
@@ -28,10 +51,8 @@ class GasPriceStore {
       this.selectedGasPrice = data.fast;
       this.gasPrices = data;
       this.loading = false;
-    }).catch((e) => {
-      this.loading = true;
-      console.error(e)
-    })
+
+
   }
 
   @computed get standardInHex() {

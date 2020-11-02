@@ -34,7 +34,12 @@ class TxStore {
     this.txs = [];
     this.approval = '';
     if(new BN(this.tokenStore.totalBalance).gt(new BN(this.tokenStore.allowance))){
-      this._approve();
+      try {
+        await this._approve();
+      } catch (e){
+        console.error(e)
+      }
+
       const interval = setInterval(() => {
         const index = this.txHashToIndex[this.approval];
         console.log('checking autorun', index, this.approval, this.txHashToIndex, toJS(this.txs))
@@ -66,16 +71,16 @@ class TxStore {
         this.txHashToIndex[hash] = index;
         this.txs[index] = {status: 'pending', name: `MultiSender Approval to spend ${this.tokenStore.totalBalance} ${this.tokenStore.tokenSymbol}`, hash}
         this.getTxStatus(hash)
-  
+
       })
       .on('error', (error) => {
-        swal("Error!", error.message, 'error')
-        console.error(error)
+        //swal("Error!", error.message, 'error')
+        //console.error(error)
       })
     } catch (e){
-      console.error(e)
+      //console.error(e)
     }
-    
+
   }
 
   async _multisend({slice, addPerTx}) {
@@ -84,15 +89,15 @@ class TxStore {
     }
     const token_address = this.tokenStore.tokenAddress
     let {addresses_to_send, balances_to_send, proxyMultiSenderAddress, currentFee, totalBalance} =  this.tokenStore;
-    
-    
+
+
     const start = (slice - 1) * addPerTx;
     const end = slice * addPerTx;
     addresses_to_send = addresses_to_send.slice(start, end);
     balances_to_send = balances_to_send.slice(start, end);
     let ethValue;
     if(token_address === "0x000000000000000000000000000000000000bEEF"){
-      
+
       const totalInWei = balances_to_send.reduce((total, num) => {
         return (new BN(total).plus(new BN(num)))
       })
@@ -130,19 +135,19 @@ class TxStore {
         this.getTxStatus(hash)
       })
       .on('error', (error) => {
-        swal("Error!", error.message, 'error')
-        console.log(error)
+        //swal("Error!", error.message, 'error')
+        //console.log(error)
       })
       slice--;
       if (slice > 0) {
         this._multisend({slice, addPerTx});
       } else {
-          
+
       }
     } catch(e){
       console.error(e)
     }
-  }  
+  }
 
   async getTxReceipt(hash){
     console.log('getTxReceipt')
